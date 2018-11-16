@@ -23,30 +23,6 @@
     </Row>
 </MTable>
 
-
-@if (isLoading)
-{
-    <p><em>Loading...</em></p>
-}
-else
-{
-    <table class="table">
-        <thead>
-            <tr>
-
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var brewer in brewers)
-            {
-            <tr>
-
-            </tr>
-            }
-        </tbody>
-    </table>
-}
-
 @functions {
     IReadOnlyList<Brewer> brewers = new List<Brewer>();
     bool isLoading = true;
