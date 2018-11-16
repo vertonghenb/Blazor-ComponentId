@@ -1,0 +1,46 @@
+﻿@page "/customers"
+@inject ICustomerManager CustomerManager
+
+<h1>Brewers</h1>
+
+@if (isLoading)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <th>Description</th>
+                <th>Country</th>
+                <th>Street</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var customer in customers)
+            {
+            <tr>
+                <td>@customer.Id</td>
+                <td>@customer.Name</td>
+                <td>@customer.VatNumber</td>
+                <td>@customer.Address.Country</td>
+                <td>@customer.Address.Street</td>
+            </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@functions {
+    IReadOnlyList<Customer> customers = new List<Customer>();
+    bool isLoading = true;
+
+    protected override async Task OnInitAsync()
+    {
+        customers = await CustomerManager.GetIndexAsync();
+        isLoading = false;
+    }
+}

@@ -1,0 +1,61 @@
+﻿@inherits MBaseComponent
+@typeparam TItem
+<div class="table-responsive">
+    <table class=@GetClass()>
+        @if (IsLoading)
+        {
+            <MAlert Text="@LoadingText" />
+        }
+        else if (!Items.Any())
+        {
+            <MAlert Text="@NoResultsText" />
+        }
+        else
+        {
+            <thead>
+                <tr>
+                    @Header
+                </tr>
+            </thead>
+            <tbody>
+
+                @foreach (var item in Items)
+                {
+                    <tr>@Row(item)</tr>
+                }
+            </tbody>
+            <tfoot>
+                @Foot
+            </tfoot>
+        }
+    </table>
+</div>
+
+@functions{
+    #region Parameters
+    [Parameter] bool IsStriped { get; set; }
+    [Parameter] bool IsCompact { get; set; }
+    [Parameter] bool IsBordered { get; set; }
+    [Parameter] bool IsHoverable { get; set; } = true;
+    [Parameter] IReadOnlyList<TItem> Items { get; set; }
+    [Parameter] bool IsLoading { get; set; }
+    [Parameter] string LoadingText { get; set; } = "Crunching data...";
+    [Parameter] string NoResultsText { get; set; } = "No results found...";
+
+    [Parameter] RenderFragment Header { get; set; }
+    [Parameter] RenderFragment Foot { get; set; }
+    [Parameter] RenderFragment<TItem> Row { get; set; }
+    #endregion
+
+    #region Functions
+    protected override string GetClass()
+    {
+        string defaultClass = "table";
+        return defaultClass
+                      .AddCssClassWhen(IsCompact, "table-sm")
+                      .AddCssClassWhen(IsBordered, "table-bordered")
+                      .AddCssClassWhen(IsHoverable, "table-hover")
+                      .AddCssClassWhen(IsStriped, "table-striped");
+    }
+    #endregion
+}
